@@ -7,7 +7,7 @@ var gutil = require('gulp-util');
 var sloc = require('sloc');
 
 function gulpSloc(options) {
-  var supportedExtensions = ['js', 'cc', 'c', 'coffeescript', 'coffee', 'python', 'py', 'java', 'php'];
+  var supportedExtensions = sloc.extensions;
   var log = gutil.log;
   var colors = gutil.colors;
   var File = gutil.File;
@@ -24,7 +24,7 @@ function gulpSloc(options) {
 
   return (function () {
 
-    var counters = { loc: 0, sloc: 0, cloc: 0, scloc: 0, mcloc: 0, nloc: 0, file: 0 };
+    var counters = { total: 0, source: 0, comment: 0, single: 0, block: 0, mixed: 0, empty:0, file: 0 };
 
     function writeJsonReport() {
       /*jshint validthis: true*/
@@ -66,12 +66,13 @@ function gulpSloc(options) {
       /*jshint validthis: true*/
 
       log('-------------------------------');
-      log('        physical lines : ' + colors.green(String(counters.loc)));
-      log('  lines of source code : ' + colors.green(String(counters.sloc)));
-      log('         total comment : ' + colors.cyan(String(counters.cloc)));
-      log('            singleline : ' + String(counters.scloc));
-      log('             multiline : ' + String(counters.mcloc));
-      log('                 empty : ' + colors.red(String(counters.nloc)));
+      log('        physical lines : ' + colors.green(String(counters.total)));
+      log('  lines of source code : ' + colors.green(String(counters.source)));
+      log('         total comment : ' + colors.cyan(String(counters.comment)));
+      log('            singleline : ' + String(counters.single));
+      log('             multiline : ' + String(counters.block));
+      log('                 mixed : ' + colors.cyan(String(counters.mixed)));
+      log('                 empty : ' + colors.red(String(counters.empty)));
       log('');
       log('  number of files read : ' + colors.green(String(counters.file)));
 
